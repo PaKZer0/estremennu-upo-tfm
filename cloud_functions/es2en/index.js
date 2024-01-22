@@ -18,19 +18,23 @@ functions.cloudEvent('translateEs2En', async (cloudEvent) => {
     cloudEvent.data.name.indexOf(sourceFolder) > -1 ) {
     const storage = new Storage();
     const bucket = storage.bucket(cloudEvent.data.bucket);
-    // Download the file
-    const options = {
-      destination: tempFilename,
-    };
-    await bucket.file(cloudEvent.data.name).download(options);
-    
-    const content = fs.readFileSync(tempFilename).toString();
-    const [translatedContent] = await translate.translate(content, 'en');
-    // Create translated file
-    fs.writeFileSync(tempFilename2, translatedContent);
 
-    // Check if the file exists and overwrite
+    // Check if the file exists and proceed if it doesnt
     const newFilePath = cloudEvent.data.name.replace(sourceFolder, targetFolder)
-    await bucket.upload(tempFilename2, { destination: newFilePath });
+    const [exists] = await bucket.file(newFilePath).exists();
+    if (!exists) {
+      // Download the file
+      const options = {
+        destination: tempFilename,
+      };
+      await bucket.file(cloudEvent.data.name).download(options);
+      
+      const content = fs.readFileSync(tempFilename).toString();
+      const [translatedContent] = await translate.translate(content, 'en');
+      // Create translated file
+      fs.writeFileSync(tempFilename2, translatedContent);
+
+      await bucket.upload(tempFilename2, { destination: newFilePath });
+    }
   }
 });
