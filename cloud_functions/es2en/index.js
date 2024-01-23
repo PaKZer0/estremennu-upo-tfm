@@ -8,14 +8,16 @@ const translate = new Translate({ projectId });
 
 const sourceSuffix = '.es.txt';
 const targetSuffix = '.en.txt';
+const trainFolder = 'training-data';
 const eventType = 'google.cloud.storage.object.v1.finalized';
 const tempFilename = '/tmp/tmp.txt';
 const tempFilename2 = '/tmp/translated.txt';
 
 functions.cloudEvent('translateEs2En', async (cloudEvent) => {
-  // Filter only creation/update events on the source folder
+  // Filter only creation/update events on the training data folder
   if ( cloudEvent.type === eventType && 
-    cloudEvent.data.name.indexOf(sourceSuffix) > -1 ) {
+    cloudEvent.data.name.indexOf(sourceSuffix) > -1 && 
+    cloudEvent.data.name.indexOf(trainFolder) > -1 ) {
     const storage = new Storage();
     const bucket = storage.bucket(cloudEvent.data.bucket);
 
