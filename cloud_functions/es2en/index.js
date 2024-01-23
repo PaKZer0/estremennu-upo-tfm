@@ -6,8 +6,8 @@ const { Storage } = require('@google-cloud/storage');
 const projectId = 'test-cf-411521';
 const translate = new Translate({ projectId });
 
-const sourceFolder = 'es/';
-const targetFolder = 'en/';
+const sourceSuffix = '.es.txt';
+const targetSuffix = '.en.txt';
 const eventType = 'google.cloud.storage.object.v1.finalized';
 const tempFilename = '/tmp/tmp.txt';
 const tempFilename2 = '/tmp/translated.txt';
@@ -15,12 +15,12 @@ const tempFilename2 = '/tmp/translated.txt';
 functions.cloudEvent('translateEs2En', async (cloudEvent) => {
   // Filter only creation/update events on the source folder
   if ( cloudEvent.type === eventType && 
-    cloudEvent.data.name.indexOf(sourceFolder) > -1 ) {
+    cloudEvent.data.name.indexOf(sourceSuffix) > -1 ) {
     const storage = new Storage();
     const bucket = storage.bucket(cloudEvent.data.bucket);
 
     // Check if the file exists and proceed if it doesnt
-    const newFilePath = cloudEvent.data.name.replace(sourceFolder, targetFolder)
+    const newFilePath = cloudEvent.data.name.replace(sourceSuffix, targetSuffix)
     const [exists] = await bucket.file(newFilePath).exists();
     if (!exists) {
       // Download the file
