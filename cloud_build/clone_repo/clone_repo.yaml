@@ -15,6 +15,8 @@ steps:
     args:
       - '-c'
       - |
+        pwd; ls -l
+        
         # remove unnecesary files
         rm source/contenido-completo.es.txt
         rm source/contenido-completo.ext.txt
