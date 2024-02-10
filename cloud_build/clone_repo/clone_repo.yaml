@@ -16,13 +16,13 @@ steps:
       - '-c'
       - |
         pwd; ls -l
-        
+
         # remove unnecesary files
         rm source/contenido-completo.es.txt
         rm source/contenido-completo.ext.txt
 
         # build script
-        cd code/cloud_build/cb_translate
+        cd cloud_build/cb_translate
         npm i
 
         # for each file run translate function
