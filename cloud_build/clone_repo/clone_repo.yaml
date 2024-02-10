@@ -29,7 +29,7 @@ steps:
 
         echo "For each file run translate function"
         find ../../source/ -type f -name "*.es.txt" | while read -r file; do
-            # Echo the file name
+            # Run translate
             npm run translate "$file"
         done
 
@@ -38,6 +38,36 @@ steps:
             # Echo the file name
             echo "Translated: $file"
         done
+
+        cd ../../source
+
+        echo "Bundle texts: EXT"
+        file_ext="bundle.ext.txt"
+        touch $file_ext
+
+        find . -type f -name "*.ext.txt" | while read -r file; do
+            # bundle file content
+            cat "$file" >>$file_ext
+        done
+
+        echo "Bundle texts: ES"
+        file_es="bundle.es.txt"
+        touch $file_es
+
+        find . -type f -name "*.es.txt" | while read -r file; do
+            # bundle file content
+            cat "$file" >>$file_es
+        done
+
+        echo "Bundle texts: EN"
+        file_en="bundle.en.txt"
+        touch $file_en
+
+        find . -type f -name "*.en.txt" | while read -r file; do
+            # bundle file content
+            cat "$file" >>$file_en
+        done
+
 
   # Step 4: Push contents to Cloud Storage bucket
   - name: 'gcr.io/cloud-builders/gsutil'
