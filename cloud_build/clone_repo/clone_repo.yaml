@@ -17,9 +17,11 @@ steps:
       - |
         pwd; ls -l
 
-        echo "Remove unnecesary files"
+        echo "Remove staticly compiled text files"
         rm source/contenido-completo.es.txt
         rm source/contenido-completo.ext.txt
+        rm source/Frases/frases.es.txt
+        rm source/Frases/frases.ext.txt
 
         echo "Build translate script"
         cd cloud_build/cb_translate
