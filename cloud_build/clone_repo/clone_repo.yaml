@@ -17,18 +17,24 @@ steps:
       - |
         pwd; ls -l
 
-        # remove unnecesary files
+        echo "Remove unnecesary files"
         rm source/contenido-completo.es.txt
         rm source/contenido-completo.ext.txt
 
-        # build script
+        echo "Build translate script"
         cd cloud_build/cb_translate
         npm i
 
-        # for each file run translate function
+        echo "For each file run translate function"
         find ../../source/ -type f -name "*.es.txt" | while read -r file; do
             # Echo the file name
-            echo "$file"
+            npm run translate "$file"
+        done
+
+        echo "List translated files"
+        find ../../source/ -type f -name "*.en.txt" | while read -r file; do
+            # Echo the file name
+            echo "Translated: $file"
         done
 
   # Step 4: Push contents to Cloud Storage bucket
