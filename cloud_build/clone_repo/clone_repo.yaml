@@ -38,5 +38,5 @@ steps:
         done
 
   # Step 4: Push contents to Cloud Storage bucket
-  #- name: 'gcr.io/cloud-builders/gsutil'
-  #  args: ['cp', '-r', 'source/*', 'gs://estremennu-test-bucket/training-data/']
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', '-r', 'source/*', 'gs://estremennu-test-bucket/training-data/']
