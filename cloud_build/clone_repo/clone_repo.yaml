@@ -68,6 +68,30 @@ steps:
             cat "$file" >>$file_en
         done
 
+        echo "Convert to upper and lower case and make final bundles"
+        readarray f < bundle.ext.txt ; printf %s "${f[@]^^}" > bundle_upper.ext.txt ; unset f
+        readarray f < bundle.ext.txt ; printf %s "${f[@],,}" > bundle_lower.ext.txt ; unset f
+
+        readarray f < bundle.es.txt ; printf %s "${f[@]^^}" > bundle_upper.es.txt ; unset f
+        readarray f < bundle.es.txt ; printf %s "${f[@],,}" > bundle_lower.es.txt ; unset f
+
+        readarray f < bundle.en.txt ; printf %s "${f[@]^^}" > bundle_upper.en.txt ; unset f
+        readarray f < bundle.en.txt ; printf %s "${f[@],,}" > bundle_lower.en.txt ; unset f
+
+        touch final_bundle.ext.txt
+        cat bundle.ext.txt > final_bundle.ext.txt
+        cat bundle_upper.ext.txt >> final_bundle.ext.txt
+        cat bundle_lower.ext.txt >> final_bundle.ext.txt
+
+        touch final_bundle.es.es
+        cat bundle.es.txt > final_bundle.es.txt
+        cat bundle_upper.es.txt >> final_bundle.es.txt
+        cat bundle_lower.es.txt >> final_bundle.es.txt
+
+        touch final_bundle.en.txt
+        cat bundle.en.txt > final_bundle.en.txt
+        cat bundle_upper.en.txt >> final_bundle.en.txt
+        cat bundle_lower.en.txt >> final_bundle.en.txt
 
   # Step 4: Push contents to Cloud Storage bucket
   - name: 'gcr.io/cloud-builders/gsutil'
