@@ -45,7 +45,7 @@ steps:
         file_ext="bundle.ext.txt"
         touch $file_ext
 
-        find . -type f -name "*.ext.txt" | while read -r file; do
+        find . -type f -name "*.ext.txt" -not -name "bundle.ext.txt" | sort | while read -r file; do
             # bundle file content
             cat "$file" >>$file_ext
         done
@@ -54,7 +54,7 @@ steps:
         file_es="bundle.es.txt"
         touch $file_es
 
-        find . -type f -name "*.es.txt" | while read -r file; do
+        find . -type f -name "*.es.txt" -not -name "bundle.es.txt" | sort | while read -r file; do
             # bundle file content
             cat "$file" >>$file_es
         done
@@ -63,7 +63,7 @@ steps:
         file_en="bundle.en.txt"
         touch $file_en
 
-        find . -type f -name "*.en.txt" | while read -r file; do
+        find . -type f -name "*.en.txt" -not -name "bundle.en.txt" | sort | while read -r file; do
             # bundle file content
             cat "$file" >>$file_en
         done
