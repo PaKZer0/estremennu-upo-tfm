@@ -1,9 +1,8 @@
 {
-    "name": "OSCEC",
-    "type": "data",
-    "from_code": "ext",
-    "to_code": "en",
-    "size": "SIZE",
-    "reference": "https://github.com/juanro49/recursos_es-ext"
-  }
-  
+  "name": "OSCEC",
+  "type": "data",
+  "from_code": "ext",
+  "to_code": "en",
+  "size": "SIZE",
+  "reference": "https://github.com/juanro49/recursos_es-ext"
+}
