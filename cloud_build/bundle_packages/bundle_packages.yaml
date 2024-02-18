@@ -96,9 +96,9 @@ steps:
         gsutil cp data_index_skeleton.json gs://estremennu-argos-packages/
 
         echo 'Make files public'
-        gsutil acl ch -u AllUsers:R gs://estremennu-argos-packages/
-        #gsutil acl ch -u AllUsers:R gs://estremennu-argos-packages/data-oscec-en_ext.argosdata
-        #gsutil acl ch -u AllUsers:R gs://estremennu-argos-packages/data-oscec-es_ext.argosdata
-        #gsutil acl ch -u AllUsers:R gs://estremennu-argos-packages/data-oscec-ext_en.argosdata
-        #gsutil acl ch -u AllUsers:R gs://estremennu-argos-packages/data-oscec-ext_es.argosdata
-        #gsutil acl ch -u AllUsers:R gs://estremennu-argos-packages/data_index_skeleton.json
+        # gsutil acl ch -u AllUsers:R gs://estremennu-argos-packages/
+        gsutil acl ch -u AllUsers:R gs://estremennu-argos-packages/data-oscec-en_ext.argosdata
+        gsutil acl ch -u AllUsers:R gs://estremennu-argos-packages/data-oscec-es_ext.argosdata
+        gsutil acl ch -u AllUsers:R gs://estremennu-argos-packages/data-oscec-ext_en.argosdata
+        gsutil acl ch -u AllUsers:R gs://estremennu-argos-packages/data-oscec-ext_es.argosdata
+        gsutil acl ch -u AllUsers:R gs://estremennu-argos-packages/data_index_skeleton.json
