@@ -17,6 +17,8 @@ steps:
         gsutil cp gs://estremennu-test-bucket/jsons/metadata_ext_en.json ./
         gsutil cp gs://estremennu-test-bucket/jsons/metadata_ext_es.json ./
 
+        gsutil cp gs://estremennu-test-bucket/jsons/data_index_skeleton.json ./
+
         echo 'Make test size zips'
         echo 'Create dummy files'
         echo '' > README
@@ -32,6 +34,7 @@ steps:
         zip -u "$argos_file" README LICENCE metadata.json source target
         size_bundle=$(stat --printf="%s" "$argos_file")
         sed -i "s/\"SIZE\"/$size_bundle/g" metadata.json
+        sed -i "s/\"SIZE_EN_EXT\"/$size_bundle/g" data_index_skeleton.json
         rm "$argos_file"
         zip -u "$argos_file" README LICENCE metadata.json source target
 
@@ -47,6 +50,7 @@ steps:
         zip -u "$argos_file" README LICENCE metadata.json source target
         size_bundle=$(stat --printf="%s" "$argos_file")
         sed -i "s/\"SIZE\"/$size_bundle/g" metadata.json
+        sed -i "s/\"SIZE_ES_EXT\"/$size_bundle/g" data_index_skeleton.json
         rm "$argos_file"
         zip -u "$argos_file" README LICENCE metadata.json source target
 
@@ -62,6 +66,7 @@ steps:
         zip -u "$argos_file" README LICENCE metadata.json source target
         size_bundle=$(stat --printf="%s" "$argos_file")
         sed -i "s/\"SIZE\"/$size_bundle/g" metadata.json
+        sed -i "s/\"SIZE_EXT_EN\"/$size_bundle/g" data_index_skeleton.json
         rm "$argos_file"
         zip -u "$argos_file" README LICENCE metadata.json source target
 
@@ -77,6 +82,7 @@ steps:
         zip -u "$argos_file" README LICENCE metadata.json source target
         size_bundle=$(stat --printf="%s" "$argos_file")
         sed -i "s/\"SIZE\"/$size_bundle/g" metadata.json
+        sed -i "s/\"SIZE_EXT_ES\"/$size_bundle/g" data_index_skeleton.json
         rm "$argos_file"
         zip -u "$argos_file" README LICENCE metadata.json source target
 
@@ -85,3 +91,6 @@ steps:
         gsutil cp data-oscec-es_ext.argosdata gs://estremennu-argos-packages/
         gsutil cp data-oscec-ext_en.argosdata gs://estremennu-argos-packages/
         gsutil cp data-oscec-ext_es.argosdata gs://estremennu-argos-packages/
+        
+        echo 'Upload data index'
+        gsutil cp data_index_skeleton.json gs://estremennu-argos-packages/
