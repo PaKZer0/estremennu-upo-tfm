@@ -1,0 +1,99 @@
+steps:
+  # Paso 1: Download files
+  - name: 'gcr.io/cloud-builders/gsutil'
+    entrypoint: 'bash'
+    dir: '/workspace'
+    args:
+      - '-c'
+      - |
+        echo 'Download text bundles'
+        gsutil cp gs://estremennu-test-bucket/training-data/final_bundle.ext.txt ./
+        gsutil cp gs://estremennu-test-bucket/training-data/final_bundle.es.txt ./
+        gsutil cp gs://estremennu-test-bucket/training-data/final_bundle.en.txt ./
+
+        echo 'Download jsons'
+        gsutil cp gs://estremennu-test-bucket/jsons/metadata_en_ext.json ./
+        gsutil cp gs://estremennu-test-bucket/jsons/metadata_es_ext.json ./
+        gsutil cp gs://estremennu-test-bucket/jsons/metadata_ext_en.json ./
+        gsutil cp gs://estremennu-test-bucket/jsons/metadata_ext_es.json ./
+
+        gsutil cp gs://estremennu-test-bucket/jsons/data_index_skeleton.json ./
+
+        echo 'Make test size zips'
+        echo 'Create dummy files'
+        echo '' > README
+        echo '' > LICENCE
+
+        echo 'Create en ext zip'
+        argos_file="data-oscec-en_ext.argosdata"
+
+        cp final_bundle.en.txt source
+        cp final_bundle.ext.txt target
+        cp metadata_en_ext.json metadata.json
+
+        zip -u "$argos_file" README LICENCE metadata.json source target
+        size_bundle=$(stat --printf="%s" "$argos_file")
+        sed -i "s/\"SIZE\"/$size_bundle/g" metadata.json
+        sed -i "s/\"SIZE_EN_EXT\"/$size_bundle/g" data_index_skeleton.json
+        rm "$argos_file"
+        zip -u "$argos_file" README LICENCE metadata.json source target
+
+        echo 'Create es ext zip'
+        rm source; rm target; rm metadata.json
+
+        argos_file="data-oscec-es_ext.argosdata"
+
+        cp final_bundle.es.txt source
+        cp final_bundle.ext.txt target
+        cp metadata_es_ext.json metadata.json
+
+        zip -u "$argos_file" README LICENCE metadata.json source target
+        size_bundle=$(stat --printf="%s" "$argos_file")
+        sed -i "s/\"SIZE\"/$size_bundle/g" metadata.json
+        sed -i "s/\"SIZE_ES_EXT\"/$size_bundle/g" data_index_skeleton.json
+        rm "$argos_file"
+        zip -u "$argos_file" README LICENCE metadata.json source target
+
+        echo 'Create ext en zip'
+        rm source; rm target; rm metadata.json
+
+        argos_file="data-oscec-ext_en.argosdata"
+
+        cp final_bundle.ext.txt source
+        cp final_bundle.en.txt target
+        cp metadata_es_ext.json metadata.json
+
+        zip -u "$argos_file" README LICENCE metadata.json source target
+        size_bundle=$(stat --printf="%s" "$argos_file")
+        sed -i "s/\"SIZE\"/$size_bundle/g" metadata.json
+        sed -i "s/\"SIZE_EXT_EN\"/$size_bundle/g" data_index_skeleton.json
+        rm "$argos_file"
+        zip -u "$argos_file" README LICENCE metadata.json source target
+
+        echo 'Create ext es zip'
+        rm source; rm target; rm metadata.json
+
+        argos_file="data-oscec-ext_es.argosdata"
+
+        cp final_bundle.ext.txt source
+        cp final_bundle.es.txt target
+        cp metadata_es_ext.json metadata.json
+
+        zip -u "$argos_file" README LICENCE metadata.json source target
+        size_bundle=$(stat --printf="%s" "$argos_file")
+        sed -i "s/\"SIZE\"/$size_bundle/g" metadata.json
+        sed -i "s/\"SIZE_EXT_ES\"/$size_bundle/g" data_index_skeleton.json
+        rm "$argos_file"
+        zip -u "$argos_file" README LICENCE metadata.json source target
+
+        echo 'Push files into bucket'
+        gsutil cp data-oscec-en_ext.argosdata gs://estremennu-argos-packages/
+        gsutil cp data-oscec-es_ext.argosdata gs://estremennu-argos-packages/
+        gsutil cp data-oscec-ext_en.argosdata gs://estremennu-argos-packages/
+        gsutil cp data-oscec-ext_es.argosdata gs://estremennu-argos-packages/
+        
+        echo 'Upload data index'
+        gsutil cp data_index_skeleton.json gs://estremennu-argos-packages/
+
+        echo 'Make files public'
+        gsutil iam ch allUsers:objectViewer gs://estremennu-argos-packages/

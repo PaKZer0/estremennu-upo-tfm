@@ -23,8 +23,8 @@ const translateFunction = async () => {
   const content = fs.readFileSync(inFile).toString();
   const [translatedContent] = await translate.translate(content, 'en');
 
-  console.log(content);
-  console.log(translatedContent);
+  // console.log(content);
+  // console.log(translatedContent);
 
   // Create translated file
   const newFilePath = inFile.replace(sourceSuffix, targetSuffix);
