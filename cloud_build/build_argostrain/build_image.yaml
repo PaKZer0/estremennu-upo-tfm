@@ -23,11 +23,7 @@ steps:
       - |
         docker build -t europe-west1-docker.pkg.dev/$PROJECT_ID/argos-repository/argostrain:latest .
     
-  # Paso 3: Configure Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['config', '--enable-untrusted-credentials']
-    
-  # Paso 4: Push image to Artifact Registry
+  # Step 4: Push image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'europe-west1-docker.pkg.dev/$PROJECT_ID/argos-repository/argostrain:latest']
   

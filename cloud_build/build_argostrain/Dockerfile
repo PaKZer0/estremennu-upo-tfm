@@ -22,7 +22,7 @@ ADD auto-train /home/argosopentech/env/bin/argos-train
 
 RUN bash -c "\
     source env/bin/activate && \
-    /home/argosopentech/env/bin/pip install google-cloud-storage && \
+    /home/argosopentech/env/bin/pip install google-cloud-storage python-dotenv && \
     rm /home/argosopentech/argos-train/argostrain/train.py && \
     mv /home/argosopentech/argos-train/argostrain/custom_train.py /home/argosopentech/argos-train/argostrain/train.py && \
     sudo chmod +x /home/argosopentech/argos-train/argostrain/train.py"

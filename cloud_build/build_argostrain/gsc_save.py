@@ -1,5 +1,8 @@
 import os
+from dotenv import load_dotenv
 from google.cloud import storage
+
+load_dotenv('/home/argosopentech/.env')
 
 def save_model(model_filename):
     GCS_CLIENT = storage.Client(project=os.getenv('PROJECT_ID'))
