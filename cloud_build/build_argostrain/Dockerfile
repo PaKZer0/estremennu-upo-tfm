@@ -34,9 +34,3 @@ WORKDIR /home/argosopentech/argos-train
 ADD entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ./entrypoint.sh
-
-#ENTRYPOINT \
-#    cd /home/argosopentech/argos-train && \
-#    export $(cat /home/argosopentech/.env | xargs) && \
-#    echo 'Building Spanish to Extremaduran' && \
-#    /home/argosopentech/env/bin/python autorun es ext Spanish Extremaduran 1.0
