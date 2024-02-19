@@ -47,7 +47,8 @@ steps:
 
         find . -type f -name "*.ext.txt" -not -name "bundle.ext.txt" | sort | while read -r file; do
             # bundle file content
-            echo "Add $file"
+            len=$(wc -l < "$file")
+            echo "Add $file with length $len"
             cat "$file" >>$file_ext
         done
 
@@ -57,7 +58,8 @@ steps:
 
         find . -type f -name "*.es.txt" -not -name "bundle.es.txt" | sort | while read -r file; do
             # bundle file content
-            echo "Add $file"
+            len=$(wc -l < "$file")
+            echo "Add $file with length $len"
             cat "$file" >>$file_es
         done
 
@@ -67,7 +69,8 @@ steps:
 
         find . -type f -name "*.en.txt" -not -name "bundle.en.txt" | sort | while read -r file; do
             # bundle file content
-            echo "Add $file"
+            len=$(wc -l < "$file")
+            echo "Add $file with length $len"
             cat "$file" >>$file_en
         done
 
