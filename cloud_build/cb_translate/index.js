@@ -36,7 +36,6 @@ const translateFunction = async () => {
 
   for (const chunk of chunks) {
     const [translatedChunk] = await translate.translate(chunk, 'en');
-    console.log(translatedChunk);
     translatedChunks.push(translatedChunk);
   }
 
