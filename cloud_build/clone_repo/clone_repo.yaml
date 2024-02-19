@@ -47,6 +47,8 @@ steps:
 
         find . -type f -name "*.ext.txt" -not -name "bundle.ext.txt" | sort | while read -r file; do
             # bundle file content
+            len=$(wc -l < "$file")
+            echo "Add $file with length $len"
             cat "$file" >>$file_ext
         done
 
@@ -56,6 +58,8 @@ steps:
 
         find . -type f -name "*.es.txt" -not -name "bundle.es.txt" | sort | while read -r file; do
             # bundle file content
+            len=$(wc -l < "$file")
+            echo "Add $file with length $len"
             cat "$file" >>$file_es
         done
 
@@ -65,6 +69,8 @@ steps:
 
         find . -type f -name "*.en.txt" -not -name "bundle.en.txt" | sort | while read -r file; do
             # bundle file content
+            len=$(wc -l < "$file")
+            echo "Add $file with length $len"
             cat "$file" >>$file_en
         done
 
@@ -83,7 +89,7 @@ steps:
         cat bundle_upper.ext.txt >> final_bundle.ext.txt
         cat bundle_lower.ext.txt >> final_bundle.ext.txt
 
-        touch final_bundle.es.es
+        touch final_bundle.es.txt
         cat bundle.es.txt > final_bundle.es.txt
         cat bundle_upper.es.txt >> final_bundle.es.txt
         cat bundle_lower.es.txt >> final_bundle.es.txt
@@ -99,4 +105,4 @@ steps:
   
   # Step 5: Push metadata files to Cloud Storage bucket
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', '-r', 'code/cloud_build/metadata_files/*', 'gs://estremennu-test-bucket/jsons']
+    args: ['cp', '-r', 'cloud_build/metadata_files/*', 'gs://estremennu-test-bucket/jsons']
