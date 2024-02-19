@@ -21,6 +21,8 @@ steps:
     args:
       - '-c'
       - |
+        pwd
+        cat Dockerfile
         docker build -t europe-west1-docker.pkg.dev/$PROJECT_ID/argos-repository/argostrain:latest .
     
   # Paso 3: Configure Artifact Registry
