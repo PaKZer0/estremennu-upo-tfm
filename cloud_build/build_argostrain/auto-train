@@ -1,0 +1,12 @@
+#!/home/argosopentech/env/bin/python
+import sys
+import subprocess
+
+def main():
+    script_args = sys.argv[1:]
+
+    # Call autorun with the same arguments
+    subprocess.run(["/home/argosopentech/env/bin/python", "/home/argosopentech/argos-train/autorun"] + script_args)
+
+if __name__ == "__main__":
+    main()
