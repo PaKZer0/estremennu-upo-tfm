@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+
+import argostrain
+import argparse
+
+from argostrain import train
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Description of your script')
+    
+    parser.add_argument('from_code', type=str, help='Source language code')
+    parser.add_argument('to_code', type=str, help='Target language code')
+    parser.add_argument('from_name', type=str, help='Source language name')
+    parser.add_argument('to_name', type=str, help='Target language name')
+    parser.add_argument('package_version', type=str, help='Package version')
+
+    return parser.parse_args()
+
+if __name__ == "__main__":
+    args = parse_args()
+
+    from_code = args.from_code
+    to_code = args.to_code
+    from_name = args.from_name
+    to_name = args.to_name
+    package_version = args.package_version
+    version = package_version
+    argos_version = "1.5"
+
+    print("from_code:", from_code)
+    print("to_code:", to_code)
+    print("from_name:", from_name)
+    print("to_name:", to_name)
+    print("package_version:", package_version)
+
+    # If data_exists=False then data is downloaded, otherwise it's assumed to
+    # be in settings.SOURCE_PATH and settings.TARGET_PATH
+    data_exists = False
+
+    train.train(from_code, to_code, from_name, to_name, version, package_version, argos_version, data_exists)
+    # train.train(to_code, from_code, to_name, from_name, version, package_version, argos_version, data_exists)
+
