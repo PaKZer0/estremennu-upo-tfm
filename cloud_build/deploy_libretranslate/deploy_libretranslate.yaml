@@ -1,0 +1,25 @@
+steps:
+  # Step 1: Clone this git repository
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/PaKZer0/estremennu-upo-tfm.git']
+    
+  # Step 2: Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    dir: 'cloud_build/deploy_libretranslate'
+    args:
+      - '-c'
+      - |
+        docker build -t europe-west1-docker.pkg.dev/$PROJECT_ID/argos-repository/libretranslate:latest .
+    
+  # Step 3: Push image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'europe-west1-docker.pkg.dev/$PROJECT_ID/argos-repository/libretranslate:latest']
+
+  # Step 4: Deploy in Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: ['run', 'deploy', 'SERVICE-NAME', '--image', 'europe-west1-docker.pkg.dev/$PROJECT_ID/argos-repository/libretranslate', '--region', 'europe-west1']
+  
+images:
+- 'europe-west1-docker.pkg.dev/$PROJECT_ID/argos-repository/libretranslate:latest'
