@@ -37,7 +37,7 @@ ADD misc.py /home/argosopentech/OpenNMT-py/onmt/utils/misc.py
 # > python autorun es ext Spanish Extremaduran 1.0
 
 WORKDIR /home/argosopentech/argos-train
-ADD entrypoint.sh entrypoint.sh
 ADD entrypoint_es_ext.sh entrypoint_es_ext.sh
-
-#ENTRYPOINT ./entrypoint.sh
+ADD entrypoint_ext_es.sh entrypoint_ext_es.sh
+ADD entrypoint_en_ext.sh entrypoint_en_ext.sh
+ADD entrypoint_ext_en.sh entrypoint_ext_en.sh
