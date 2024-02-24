@@ -1,9 +1,22 @@
 const fs = require('fs');
+const { BigQuery } = require('@google-cloud/bigquery');
 const functions = require('@google-cloud/functions-framework');
 const { Firestore } = require('@google-cloud/firestore');
-const firestore = new Firestore(
-  { databaseId: 'dialogflow-estremennu', keyFilename: 'credentials.json' });
 
+let accessValues = {};
+try {
+  const fileContent = fs.readFileSync('access.json');
+  accessValues = JSON.parse(fileContent);
+} catch (e) {
+  // do nothing
+}
+
+// external api options
+// init firestore
+const firestore = new Firestore(
+  { databaseId: 'dialogflow-estremennu', ...accessValues });
+
+// Definitions
 const responseSkeleton = {
   fulfillmentMessages: [
     {
@@ -14,6 +27,10 @@ const responseSkeleton = {
   ]
 };
 
+const datasetId = "translate_analytics";
+const tableId = "kpis";
+
+// functions
 const getSession = (request) => {
   sessionString = request.session;
   const split = sessionString.split('/');
@@ -75,6 +92,31 @@ const getTranslation = async (from, to, text) => {
   return jsonResponse?.translatedText;
 };
 
+const getDateTime = () => {
+  const date = new Date();
+
+  const year = date.getFullYear();
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
+  const hour = ('0' + date.getHours()).slice(-2);
+  const mins = ('0' + date.getMinutes()).slice(-2);
+  const secs = ('0' + date.getSeconds()).slice(-2);
+  const ms = ('00' + date.getMilliseconds()).slice(-3);
+
+  const formatDate = year + '-' + month + '-' + day + ' ' + hour + ':' + mins + ':' + secs + '.' + ms;
+
+  return formatDate;
+};
+
+const insertKPI = async (sessionid, from, to) => {
+  const bigquery = new BigQuery({ ...accessValues });
+  const datetime = getDateTime();
+  const newRow = { sessionid, from, to, };
+
+  await bigquery.dataset(datasetId).table(tableId).insert(newRow);
+}; 
+
+// Intent handlers
 const intentParameter = async (request) => {
   const sessionId = getSession(request);
   const parameters = getParameters(request);
@@ -111,7 +153,6 @@ const toIntent = async (request) => {
   let response = responseSkeleton;
   if (parameters && parameters?.language) {
     const language = parameters?.language.toLowerCase();
-    console.log(`Language detectado es: ${language}`);
 
     if (language !== 'inglés' && language !== 'español' && language !== 'castellano') {
       // redirect to DetectIntentAl - fallback
@@ -132,7 +173,7 @@ const toIntent = async (request) => {
       const parsedMessage = rawMessage.replace('${from}', from).replace('${to}', to);
       response.fulfillmentMessages[0].text.text[0] = parsedMessage;
 
-      console.log('Enviar analíticas de datos: from, to, fecha y hora');
+      insertKPI(sessionId, from, to); // don't await bigQuery insertion
     }
   }
 
@@ -151,19 +192,18 @@ const translateIntent = async (request) => {
   const from = myData.direction == 'from' ? 'ext' : myData.language;
   const to = myData.direction == 'to' ? 'ext' : myData.language;
 
-  console.log(`Query a LibreTranslate:\nfrom: ${from}\nto: ${to}\ntexto:${queryText}`);
   const translatedText = await getTranslation('es', 'en', queryText); // getTranslation(from, to, queryText);
 
   const rawMessage = request?.queryResult?.fulfillmentMessages[0].text.text[0];
   const translatedResponse = rawMessage.replace('${texto}', translatedText);
   response.fulfillmentMessages[0].text.text[0] = translatedResponse;
 
-  console.log(`Borrar sessionId de bdd`);
   await document.delete();
 
   return response;
 };
 
+// main function
 functions.http('fulfillment', async (req, res) => {
   const request = req?.body;
   const intentName = getIntentName(request);
@@ -184,6 +224,5 @@ functions.http('fulfillment', async (req, res) => {
     getTranslation('es', 'en', 'Esta petición es de calentamiento');
   }
 
-  console.log(`Enviar respuesta ${JSON.stringify(response)}`);
   res.send(response);
 });
