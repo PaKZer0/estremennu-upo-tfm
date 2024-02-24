@@ -45,7 +45,7 @@ const resetContexts = (request, response) => {
           name: context.name,
           lifespanCount: 0
         };
-        outContexts.push(zeroContext)
+        outContexts.push(zeroContext);
       }
     }
     response.outputContexts = outContexts;
@@ -89,7 +89,7 @@ const intentParameter = async (request) => {
     // get or create data
     const document = firestore.doc(`translate/${sessionId}`);
     const doc = await document.get();
-    let myData = doc.data()
+    let myData = doc.data();
     if (! doc.data() ){
       await document.set({ direction });
     } else {
@@ -98,7 +98,7 @@ const intentParameter = async (request) => {
     }
   }
 
-  const response = responseSkeleton
+  const response = responseSkeleton;
   response.fulfillmentMessages = request?.queryResult?.fulfillmentMessages;
 
   return response;
@@ -175,9 +175,11 @@ functions.http('fulfillment', async (req, res) => {
   } else if (intentName === 'OtherLanguage') {
     response = await toIntent(request);
   } else if (intentName === 'Translate'){
-    response = await translateIntent(request)
+    response = await translateIntent(request);
   } else if (intentName === 'Default Welcome Intent'){
-    response = await resetContexts(request, response)
+    response = await resetContexts(request, response);
+    // create warmup translation request
+    getTranslation('es', 'en', 'Esta petición es de calentamiento');
   }
 
   console.log(`Enviar respuesta ${JSON.stringify(response)}`);
