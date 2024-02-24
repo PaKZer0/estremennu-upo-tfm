@@ -114,11 +114,11 @@ const getDateTime = () => {
 const insertKPI = async (sessionid, from, to) => {
   try {
     const datetime = getDateTime();
-    const newRow = { sessionid, from, to, datetime};
+    const newRow = [{ sessionid, from, to, when: datetime}];
 
     await bigquery.dataset(datasetId).table(tableId).insert(newRow);
   } catch (e) {
-    console.error(e)
+    console.error(JSON.stringify(e, null, 2))
   }
 }; 
 
@@ -191,7 +191,10 @@ const toIntent = async (request) => {
       const parsedMessage = rawMessage.replace('${from}', from).replace('${to}', to);
       response.fulfillmentMessages[0].text.text[0] = parsedMessage;
 
-      insertKPI(sessionId, from, to); // don't await bigQuery insertion
+      // insert kpi
+      const fromCode = myData.direction == 'from' ? 'ext' : myData.language;
+      const toCode = myData.direction == 'to' ? 'ext' : myData.language;
+      insertKPI(sessionId, fromCode, toCode); // don't await bigQuery insertion
     }
   }
 
