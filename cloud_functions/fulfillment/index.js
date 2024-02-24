@@ -15,22 +15,25 @@ try {
 // init firestore
 const firestore = new Firestore(
   { databaseId: 'dialogflow-estremennu', ...accessValues });
+const bigquery = new BigQuery({ ...accessValues });
 
 // Definitions
-const responseSkeleton = {
-  fulfillmentMessages: [
-    {
-      text: {
-        text: ['']
-      }
-    }
-  ]
-};
-
 const datasetId = "translate_analytics";
 const tableId = "kpis";
 
 // functions
+const getResponseSkeleton = () => {
+  return {
+    fulfillmentMessages: [
+      {
+        text: {
+          text: ['']
+        }
+      }
+    ]
+  };
+};
+
 const getSession = (request) => {
   sessionString = request.session;
   const split = sessionString.split('/');
@@ -109,11 +112,14 @@ const getDateTime = () => {
 };
 
 const insertKPI = async (sessionid, from, to) => {
-  const bigquery = new BigQuery({ ...accessValues });
-  const datetime = getDateTime();
-  const newRow = { sessionid, from, to, };
+  try {
+    const datetime = getDateTime();
+    const newRow = { sessionid, from, to, datetime};
 
-  await bigquery.dataset(datasetId).table(tableId).insert(newRow);
+    await bigquery.dataset(datasetId).table(tableId).insert(newRow);
+  } catch (e) {
+    console.error(e)
+  }
 }; 
 
 // Intent handlers
@@ -140,7 +146,7 @@ const intentParameter = async (request) => {
     }
   }
 
-  const response = responseSkeleton;
+  const response = getResponseSkeleton();
   response.fulfillmentMessages = request?.queryResult?.fulfillmentMessages;
 
   return response;
@@ -150,13 +156,25 @@ const toIntent = async (request) => {
   const sessionId = getSession(request);
   const parameters = getParameters(request);
 
-  let response = responseSkeleton;
+  let response = getResponseSkeleton();
   if (parameters && parameters?.language) {
     const language = parameters?.language.toLowerCase();
 
     if (language !== 'inglés' && language !== 'español' && language !== 'castellano') {
       // redirect to DetectIntentAl - fallback
-      console.log('TENEMOS QUE PARAR ESTO');
+      console.log('Redirigir');
+
+      // modify contexts
+      const contexts = request?.queryResult?.outputContexts;
+      contexts[0].lifespanCount = 2; // increase otherlanguage lifespan
+      contexts.splice(1, 1);
+
+      response = {
+        followupEventInput: {
+          name: 'UNSUPPORTED_LANGUAGE',
+        },
+        outputContexts: contexts
+      };
     } else {
       // get direction and store language
       const document = firestore.doc(`translate/${sessionId}`);
@@ -183,7 +201,7 @@ const toIntent = async (request) => {
 const translateIntent = async (request) => {
   const sessionId = getSession(request);
   const queryText = request?.queryResult?.queryText;
-  let response = responseSkeleton;
+  let response = getResponseSkeleton();
 
   const document = firestore.doc(`translate/${sessionId}`);
   const doc = await document.get();
@@ -207,22 +225,21 @@ const translateIntent = async (request) => {
 functions.http('fulfillment', async (req, res) => {
   const request = req?.body;
   const intentName = getIntentName(request);
+  console.log(`Get request: ${JSON.stringify(request)}`);
 
-  let response = responseSkeleton;
+  let response = getResponseSkeleton();
 
   if(intentName === 'DetectIntentAl' || intentName === 'DetectIntentDel'){
     response = await intentParameter(request);
   } else if (intentName === 'OtherLanguage') {
     response = await toIntent(request);
-    delete response.outputContexts;
   } else if (intentName === 'Translate'){
     response = await translateIntent(request);
-    delete response.outputContexts;
   } else if (intentName === 'Default Welcome Intent'){
     response = await resetContexts(request, response);
     // create warmup translation request
     getTranslation('es', 'en', 'Esta petición es de calentamiento');
   }
-
+  console.log(`Send response: ${JSON.stringify(response)}`);
   res.send(response);
 });
