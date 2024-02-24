@@ -29,6 +29,52 @@ const getParameters = (request) => {
   return request?.queryResult?.parameters;
 }
 
+const resetContexts = (request, response) => {
+  const firstOutContext = 'detectintent';
+  const systemCounters = '__system_counters__';
+
+  const contexts = request?.queryResult?.outputContexts;
+  const outContexts = [];
+
+  if (contexts) {
+    for (context of contexts) {
+      if (context?.name && 
+        !context.name.endsWith(firstOutContext) &&
+        !context.name.endsWith(systemCounters)) {
+        const zeroContext = {
+          name: context.name,
+          lifespanCount: 0
+        };
+        outContexts.push(zeroContext)
+      }
+    }
+    response.outputContexts = outContexts;
+  }
+
+  response.fulfillmentMessages = request?.queryResult?.fulfillmentMessages;
+
+  return response;
+}
+
+const getTranslation = async (from, to, text) => {
+  const endpoint = fs.readFileSync('endpointTraslate.txt');
+
+  const res = await fetch(endpoint, {
+    method: "POST",
+    body: JSON.stringify({
+      q: text,
+      source: from,
+      target: to,
+      format: "text",
+      api_key: ""
+    }),
+    headers: { "Content-Type": "application/json" }
+  });
+  const jsonResponse = await res.json();
+
+  return jsonResponse?.translatedText;
+};
+
 const intentParameter = async (request) => {
   const sessionId = getSession(request);
   const parameters = getParameters(request);
@@ -53,7 +99,7 @@ const intentParameter = async (request) => {
   }
 
   const response = responseSkeleton
-  response.fulfillmentMessages[0].text.text[0] = parsedMessage;
+  response.fulfillmentMessages = request?.queryResult?.fulfillmentMessages;
 
   return response;
 };
@@ -98,7 +144,6 @@ const translateIntent = async (request) => {
   const queryText = request?.queryResult?.queryText;
   let response = responseSkeleton;
 
-  console.log('Obtener from y to, hacer query a LibreTranslate');
   const document = firestore.doc(`translate/${sessionId}`);
   const doc = await document.get();
   let myData = doc.data();
@@ -107,8 +152,7 @@ const translateIntent = async (request) => {
   const to = myData.direction == 'to' ? 'ext' : myData.language;
 
   console.log(`Query a LibreTranslate:\nfrom: ${from}\nto: ${to}\ntexto:${queryText}`);
-
-  translatedText = 'Estu es una preba';
+  const translatedText = await getTranslation('es', 'en', queryText); // getTranslation(from, to, queryText);
 
   const rawMessage = request?.queryResult?.fulfillmentMessages[0].text.text[0];
   const translatedResponse = rawMessage.replace('${texto}', translatedText);
@@ -132,8 +176,10 @@ functions.http('fulfillment', async (req, res) => {
     response = await toIntent(request);
   } else if (intentName === 'Translate'){
     response = await translateIntent(request)
+  } else if (intentName === 'Default Welcome Intent'){
+    response = await resetContexts(request, response)
   }
 
-  console.log(`Enviar respuesta ${JSON.stringify(response, null, 2)}`);
+  console.log(`Enviar respuesta ${JSON.stringify(response)}`);
   res.send(response);
 });
