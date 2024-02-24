@@ -174,8 +174,10 @@ functions.http('fulfillment', async (req, res) => {
     response = await intentParameter(request);
   } else if (intentName === 'OtherLanguage') {
     response = await toIntent(request);
+    delete response.outputContexts;
   } else if (intentName === 'Translate'){
     response = await translateIntent(request);
+    delete response.outputContexts;
   } else if (intentName === 'Default Welcome Intent'){
     response = await resetContexts(request, response);
     // create warmup translation request
