@@ -1,0 +1,27 @@
+steps:
+  # Step 1: Clone this git repository
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/PaKZer0/estremennu-upo-tfm.git']
+  
+  # Step 2: Download endpoint secret
+  - name: gcr.io/cloud-builders/gcloud
+    id: Get Envs properties
+    entrypoint: bash
+    dir: 'cloud_build/build_argostrain'
+    args:
+      - "-c"
+      - |
+        gcloud beta secrets versions access --secret=libretranslate-endpoint latest > ./endpointTraslate.txt
+        cat .env
+  
+  # Step 3: Deploy cloud function
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+    - gcloud
+    - functions
+    - deploy
+    - libre-fulfillment
+    - --region=europe-west1
+    - --source=.
+    - --trigger-http
+    - --runtime=node18
