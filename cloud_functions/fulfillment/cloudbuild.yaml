@@ -21,3 +21,4 @@ steps:
     - --source=.
     - --trigger-http
     - --runtime=nodejs18
+    - --allow-unauthenticated
