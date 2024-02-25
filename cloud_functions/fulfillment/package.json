@@ -4,8 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "npx @google-cloud/functions-framework --target=fulfillment",
-        "start:watch": "node --watch index.js"
+        "start": "npx @google-cloud/functions-framework --target=fulfillment"
     },
     "author": "Francisco Fuentes",
     "license": "ISC",
