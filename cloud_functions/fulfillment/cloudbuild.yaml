@@ -12,7 +12,6 @@ steps:
       - "-c"
       - |
         gcloud beta secrets versions access --secret=libretranslate-endpoint latest > ./endpointTraslate.txt
-        cat .env
   
   # Step 3: Deploy cloud function
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
