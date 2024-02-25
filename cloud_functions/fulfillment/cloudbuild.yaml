@@ -1,8 +1,4 @@
 steps:
-  # Step 1: Clone this git repository
-  - name: 'gcr.io/cloud-builders/git'
-    args: ['clone', 'https://github.com/PaKZer0/estremennu-upo-tfm.git']
-  
   # Step 2: Download endpoint secret
   - name: gcr.io/cloud-builders/gcloud
     id: Get Envs properties
