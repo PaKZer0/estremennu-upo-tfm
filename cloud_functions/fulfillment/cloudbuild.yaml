@@ -23,4 +23,4 @@ steps:
     - --region=europe-west1
     - --source=.
     - --trigger-http
-    - --runtime=node18
+    - --runtime=nodejs18
