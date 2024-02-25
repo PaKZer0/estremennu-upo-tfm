@@ -24,4 +24,3 @@ steps:
     - --source=.
     - --trigger-http
     - --runtime=nodejs18
-    - --no-gen2
