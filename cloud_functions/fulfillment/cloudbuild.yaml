@@ -16,7 +16,7 @@ steps:
     - gcloud
     - functions
     - deploy
-    - libre-fulfillment
+    - fulfillment
     - --region=europe-west1
     - --source=.
     - --trigger-http
