@@ -2,3 +2,7 @@ node_modules/
 package-lock.json
 data/
 .env
+!infrastructure/.env
+terraform.tfstate
+modules.json
+credentials.json
