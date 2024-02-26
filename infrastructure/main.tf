@@ -18,3 +18,10 @@ module "firestore" {
   region = var.region
   zone = var.zone
 }
+
+module "bigquery" {
+  source = "./modules/bigquery"
+  projectid = var.projectid
+  region = var.region
+  zone = var.zone
+}
