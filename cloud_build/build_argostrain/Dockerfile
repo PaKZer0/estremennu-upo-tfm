@@ -27,10 +27,17 @@ RUN bash -c "\
     mv /home/argosopentech/argos-train/argostrain/custom_train.py /home/argosopentech/argos-train/argostrain/train.py && \
     sudo chmod +x /home/argosopentech/argos-train/argostrain/train.py"
 
+# CPU training hack
+RUN rm /home/argosopentech/OpenNMT-py/onmt/bin/train.py && \
+    rm /home/argosopentech/OpenNMT-py/onmt/utils/misc.py
+ADD train.py /home/argosopentech/OpenNMT-py/onmt/bin/train.py
+ADD misc.py /home/argosopentech/OpenNMT-py/onmt/utils/misc.py
+
 # Now the training can be called without user intervention like this
 # > python autorun es ext Spanish Extremaduran 1.0
 
 WORKDIR /home/argosopentech/argos-train
-ADD entrypoint.sh entrypoint.sh
-
-ENTRYPOINT ./entrypoint.sh
+ADD entrypoint_es_ext.sh entrypoint_es_ext.sh
+ADD entrypoint_ext_es.sh entrypoint_ext_es.sh
+ADD entrypoint_en_ext.sh entrypoint_en_ext.sh
+ADD entrypoint_ext_en.sh entrypoint_ext_en.sh
