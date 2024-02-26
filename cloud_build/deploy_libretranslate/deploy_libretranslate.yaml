@@ -15,9 +15,7 @@ steps:
   # Step 3: Deploy in Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
-    args: ['run', 'deploy', 'libre-translate2', '--image', 'europe-west1-docker.pkg.dev/$PROJECT_ID/argos-repository/libretranslate', '--region', 'europe-west1', '--max-instances', '1', '--args', '^@^--load-only="en,es"', '--port', '5000']
-  
-  # '--ingress', 'internal-and-cloud-load-balancing'
+    args: ['run', 'deploy', 'libre-translate2', '--image', 'europe-west1-docker.pkg.dev/$PROJECT_ID/argos-repository/libretranslate', '--region', 'europe-west1', '--ingress', 'internal-and-cloud-load-balancing', '--max-instances', '1', '--port', '5000']
   
 images:
 - 'europe-west1-docker.pkg.dev/$PROJECT_ID/argos-repository/libretranslate:latest'
