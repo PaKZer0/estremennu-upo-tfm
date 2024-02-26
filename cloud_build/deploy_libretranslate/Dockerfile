@@ -5,4 +5,4 @@ from libretranslate/libretranslate
 
 WORKDIR /app
 EXPOSE 5000
-ENTRYPOINT [ "./venv/bin/libretranslate", "--host", "0.0.0.0", "--load-only=en,es" ]
+ENTRYPOINT [ "./venv/bin/libretranslate", "--host", "0.0.0.0", "--load-only='en,es'" ]
