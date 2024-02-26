@@ -1,0 +1,50 @@
+[
+    {
+        "package_version": "1.0",
+        "argos_version": "1.9.0",
+        "from_code": "es",
+        "from_name": "Spanish",
+        "to_code": "ext",
+        "to_name": "Extremaduran",
+        "links": [
+            "https://storage.googleapis.com/estremennu-argos-packages/translate-es_ext-1_9.argosmodel"
+        ],
+        "code": "translate-es_ext"
+    },
+    {
+        "package_version": "1.0",
+        "argos_version": "1.9.0",
+        "from_code": "ext",
+        "from_name": "Extremaduran",
+        "to_code": "es",
+        "to_name": "Spanish",
+        "links": [
+            "https://storage.googleapis.com/estremennu-argos-packages/translate-ext_es-1_9.argosmodel"
+        ],
+        "code": "translate-ext_es"
+    },
+    {
+        "package_version": "1.0",
+        "argos_version": "1.9.0",
+        "from_code": "ext",
+        "from_name": "Extremaduran",
+        "to_code": "en",
+        "to_name": "English",
+        "links": [
+            "https://storage.googleapis.com/estremennu-argos-packages/translate-ext_en-1_9.argosmodel"
+        ],
+        "code": "translate-ext_en"
+    },
+    {
+        "package_version": "1.0",
+        "argos_version": "1.9.0",
+        "from_code": "en",
+        "from_name": "English",
+        "to_code": "ext",
+        "to_name": "Extremaduran",
+        "links": [
+            "https://storage.googleapis.com/estremennu-argos-packages/translate-en_ext-1_9.argosmodel"
+        ],
+        "code": "translate-en_ex"
+    }
+]

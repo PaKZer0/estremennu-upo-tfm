@@ -1,0 +1,24 @@
+steps:
+  # Step 2: Download endpoint secret
+  - name: gcr.io/cloud-builders/gcloud
+    id: Get Envs properties
+    entrypoint: bash
+    dir: 'cloud_functions/fulfillment'
+    args:
+      - "-c"
+      - |
+        gcloud beta secrets versions access --secret=libretranslate-endpoint latest > ./endpointTraslate.txt
+  
+  # Step 3: Deploy cloud function
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    dir: 'cloud_functions/fulfillment'
+    args:
+    - gcloud
+    - functions
+    - deploy
+    - fulfillment
+    - --region=europe-west1
+    - --source=.
+    - --trigger-http
+    - --runtime=nodejs18
+    - --allow-unauthenticated

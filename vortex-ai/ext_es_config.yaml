@@ -1,0 +1,15 @@
+workerPoolSpecs:
+  machineSpec:
+    machineType: n1-standard-8
+    #acceleratorType: NVIDIA_TESLA_P100
+    #acceleratorCount: 1
+  replicaCount: 1
+  containerSpec:
+    imageUri: europe-west1-docker.pkg.dev/test-cf-411521/argos-repository/argostrain:latest
+    # script: entrypoint.sh
+    #args:
+    #  - from=es
+    #  - to=ext
+    #  - from_name=Spanish
+    #  - to_name=Extremaduran
+    #  - version=1.0

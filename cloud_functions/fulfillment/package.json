@@ -1,0 +1,17 @@
+{
+    "name": "fulfillment",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "npx @google-cloud/functions-framework --target=fulfillment"
+    },
+    "author": "Francisco Fuentes",
+    "license": "ISC",
+    "dependencies": {
+        "@google-cloud/bigquery": "^7.4.0",
+        "@google-cloud/firestore": "^7.3.0",
+        "@google-cloud/functions-framework": "^3.2.0",
+        "actions-on-google": "^3.0.0"
+    }
+}

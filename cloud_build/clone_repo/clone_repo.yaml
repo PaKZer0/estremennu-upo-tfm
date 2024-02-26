@@ -1,0 +1,108 @@
+# Clone repo with training data
+
+steps:
+  # Step 1: Clone the phrases git repository
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/PaKZer0/recursos_es-ext.git', 'source']
+  
+  # Step 2: Clone this git repository
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/PaKZer0/estremennu-upo-tfm.git', 'code']
+  
+  # Step 3: Remove unnecesary files, translate and bundle texts
+  - name: 'node:lts'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        pwd; ls -l
+
+        echo "Remove staticly compiled text files"
+        rm source/contenido-completo.es.txt
+        rm source/contenido-completo.ext.txt
+        rm source/Frases/frases.es.txt
+        rm source/Frases/frases.ext.txt
+
+        echo "Build translate script"
+        cd cloud_build/cb_translate
+        npm i
+
+        echo "For each file run translate function"
+        find ../../source/ -type f -name "*.es.txt" | while read -r file; do
+            # Run translate
+            npm run translate "$file"
+        done
+
+        echo "List translated files"
+        find ../../source/ -type f -name "*.en.txt" | while read -r file; do
+            # Echo the file name
+            echo "Translated: $file"
+        done
+
+        cd ../../source
+
+        echo "Bundle texts: EXT"
+        file_ext="bundle.ext.txt"
+        touch $file_ext
+
+        find . -type f -name "*.ext.txt" -not -name "bundle.ext.txt" | sort | while read -r file; do
+            # bundle file content
+            len=$(wc -l < "$file")
+            echo "Add $file with length $len"
+            cat "$file" >>$file_ext
+        done
+
+        echo "Bundle texts: ES"
+        file_es="bundle.es.txt"
+        touch $file_es
+
+        find . -type f -name "*.es.txt" -not -name "bundle.es.txt" | sort | while read -r file; do
+            # bundle file content
+            len=$(wc -l < "$file")
+            echo "Add $file with length $len"
+            cat "$file" >>$file_es
+        done
+
+        echo "Bundle texts: EN"
+        file_en="bundle.en.txt"
+        touch $file_en
+
+        find . -type f -name "*.en.txt" -not -name "bundle.en.txt" | sort | while read -r file; do
+            # bundle file content
+            len=$(wc -l < "$file")
+            echo "Add $file with length $len"
+            cat "$file" >>$file_en
+        done
+
+        echo "Convert to upper and lower case and make final bundles"
+        readarray f < bundle.ext.txt ; printf %s "${f[@]^^}" > bundle_upper.ext.txt ; unset f
+        readarray f < bundle.ext.txt ; printf %s "${f[@],,}" > bundle_lower.ext.txt ; unset f
+
+        readarray f < bundle.es.txt ; printf %s "${f[@]^^}" > bundle_upper.es.txt ; unset f
+        readarray f < bundle.es.txt ; printf %s "${f[@],,}" > bundle_lower.es.txt ; unset f
+
+        readarray f < bundle.en.txt ; printf %s "${f[@]^^}" > bundle_upper.en.txt ; unset f
+        readarray f < bundle.en.txt ; printf %s "${f[@],,}" > bundle_lower.en.txt ; unset f
+
+        touch final_bundle.ext.txt
+        cat bundle.ext.txt > final_bundle.ext.txt
+        cat bundle_upper.ext.txt >> final_bundle.ext.txt
+        cat bundle_lower.ext.txt >> final_bundle.ext.txt
+
+        touch final_bundle.es.txt
+        cat bundle.es.txt > final_bundle.es.txt
+        cat bundle_upper.es.txt >> final_bundle.es.txt
+        cat bundle_lower.es.txt >> final_bundle.es.txt
+
+        touch final_bundle.en.txt
+        cat bundle.en.txt > final_bundle.en.txt
+        cat bundle_upper.en.txt >> final_bundle.en.txt
+        cat bundle_lower.en.txt >> final_bundle.en.txt
+
+  # Step 4: Push contents to Cloud Storage bucket
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', '-r', 'source/*', 'gs://estremennu-test-bucket/training-data/']
+  
+  # Step 5: Push metadata files to Cloud Storage bucket
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', '-r', 'cloud_build/metadata_files/*', 'gs://estremennu-test-bucket/jsons']
