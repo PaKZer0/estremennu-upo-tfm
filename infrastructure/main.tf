@@ -1,10 +1,3 @@
-#module "vpc" {
-#  source = "./modules/vpc"
-#  projectid = var.projectid
-#  region = var.region
-#  zone = var.zone
-#}
-
 module "storage" {
   source = "./modules/storage"
   projectid = var.projectid
@@ -14,6 +7,13 @@ module "storage" {
 
 module "artifact" {
   source = "./modules/artifact"
+  projectid = var.projectid
+  region = var.region
+  zone = var.zone
+}
+
+module "firestore" {
+  source = "./modules/firestore"
   projectid = var.projectid
   region = var.region
   zone = var.zone
