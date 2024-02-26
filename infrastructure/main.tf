@@ -11,3 +11,10 @@ module "storage" {
   region = var.region
   zone = var.zone
 }
+
+module "artifact" {
+  source = "./modules/artifact"
+  projectid = var.projectid
+  region = var.region
+  zone = var.zone
+}
