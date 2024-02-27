@@ -25,3 +25,9 @@ module "bigquery" {
   region = var.region
   zone = var.zone
 }
+
+module "cbtriggers" {
+  source = "./modules/cbtriggers"
+  region = var.region
+  zone = var.zone
+}
