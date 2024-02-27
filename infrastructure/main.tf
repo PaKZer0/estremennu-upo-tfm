@@ -36,13 +36,3 @@ module "iam" {
   source = "./modules/iam"
   projectid = var.projectid
 }
-
-/*
-module "cloudrun" {
-  source = "./modules/cloudrun"
-  region = var.region
-  zone = var.zone
-  projectid = var.projectid
-  container_image = var.container_image
-}
-*/
