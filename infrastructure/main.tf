@@ -41,3 +41,7 @@ module "cloudrun" {
   source = "./modules/cloudrun"
   projectid = var.projectid
 }
+
+module "loadbalancer" {
+  source = "./modules/loadbalancer"
+}

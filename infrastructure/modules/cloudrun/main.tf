@@ -19,14 +19,15 @@ resource "google_cloud_run_service" "default" {
     annotations = {
       #    This sets the service to only allow all traffic
       "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
+      "run.googleapis.com/client-name" = "cloud-console"
     }
   }
 }
 
 data "google_iam_policy" "admin" {
   binding {
-    role = "roles/run.admin"
-    members = ["serviceAccount:${var.projectnum}@cloudbuild.gserviceaccount.com"]
+    role = "roles/run.invoker"
+    members = ["allUsers"]
   }
 }
 
