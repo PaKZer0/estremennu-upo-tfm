@@ -36,3 +36,8 @@ module "iam" {
   source = "./modules/iam"
   projectid = var.projectid
 }
+
+module "cloudrun" {
+  source = "./modules/cloudrun"
+  projectid = var.projectid
+}
