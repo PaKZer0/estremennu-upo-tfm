@@ -49,6 +49,10 @@ resource "google_cloudbuild_trigger" "clone-and-translate" {
   location = var.region
   description = "Gathers bilingual texts and translates them to english"
 
+  substitutions  = {
+    "_BUCKET_NAME" = var.bucketid1
+  }
+
   git_file_source {
     path       = "cloud_build/clone_repo/clone_repo.yaml"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
@@ -67,6 +71,11 @@ resource "google_cloudbuild_trigger" "package-creator" {
   name = "02-package-creator"
   location = var.region
   description = "Gathers trilingual texts and packages them into argosdata packages"
+
+  substitutions  = {
+    "_DATA_BUCKET" = var.bucketid1
+    "_PACKAGE_BUCKET" = var.bucketid2
+  }
 
   git_file_source {
     path       = "cloud_build/bundle_packages/bundle_packages.yaml"
@@ -87,6 +96,10 @@ resource "google_cloudbuild_trigger" "build-trainer-image" {
   location = var.region
   description = "Builds the image used for Vertex AI model training using the previously generated packages"
 
+  substitutions  = {
+    "_ARTIFACT_REPOSITORY" = var.artifact_repository_name
+  }
+
   git_file_source {
     path       = "cloud_build/build_argostrain/build_image.yaml"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
@@ -105,6 +118,10 @@ resource "google_cloudbuild_trigger" "deploy-libre-cloudrun" {
   name = "04-deploy-libre-cloudrun"
   location = var.region
   description = "Deploys a LibreTranslate instance into Cloud Run"
+
+  substitutions  = {
+    "_ARTIFACT_REPOSITORY" = var.artifact_repository_name
+  }
 
   git_file_source {
     path       = "cloud_build/deploy_libretranslate/deploy_libretranslate.yaml"

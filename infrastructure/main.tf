@@ -10,6 +10,7 @@ module "artifact" {
   projectid = var.projectid
   region = var.region
   zone = var.zone
+  name = var.artifact_repository_name
 }
 
 module "firestore" {
@@ -31,6 +32,9 @@ module "cbtriggers" {
   region = var.region
   zone = var.zone
   projectnum = var.projectnum
+  bucketid1 = var.bucketid1
+  bucketid2 = var.bucketid2
+  artifact_repository_name = var.artifact_repository_name
 }
 
 module "iam" {

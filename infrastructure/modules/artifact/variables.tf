@@ -11,5 +11,5 @@ variable "zone" {
 }
 
 variable "name" {
-  default = "argos-repository"
+  type = string
 }

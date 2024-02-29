@@ -101,8 +101,8 @@ steps:
 
   # Step 4: Push contents to Cloud Storage bucket
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', '-r', 'source/*', 'gs://estremennu-test-bucket/training-data/']
+    args: ['cp', '-r', 'source/*', 'gs://$_BUCKET_NAME/training-data/']
   
   # Step 5: Push metadata files to Cloud Storage bucket
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', '-r', 'cloud_build/metadata_files/*', 'gs://estremennu-test-bucket/jsons']
+    args: ['cp', '-r', 'cloud_build/metadata_files/*', 'gs://$_BUCKET_NAME/jsons']
