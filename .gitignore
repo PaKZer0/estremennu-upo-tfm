@@ -2,3 +2,13 @@ node_modules/
 package-lock.json
 data/
 .env
+!infrastructure/.env
+terraform.tfstate
+.terraform.tfstate.lock.info
+terraform.tfstate.backup
+modules.json
+credentials.json
+.terraform.lock.hcl
+.terraform/
+github-token.txt
+*.pem
