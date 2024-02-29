@@ -7,17 +7,17 @@ steps:
       - '-c'
       - |
         echo 'Download text bundles'
-        gsutil cp gs://estremennu-test-bucket/training-data/final_bundle.ext.txt ./
-        gsutil cp gs://estremennu-test-bucket/training-data/final_bundle.es.txt ./
-        gsutil cp gs://estremennu-test-bucket/training-data/final_bundle.en.txt ./
+        gsutil cp gs://$_DATA_BUCKET/training-data/final_bundle.ext.txt ./
+        gsutil cp gs://$_DATA_BUCKET/training-data/final_bundle.es.txt ./
+        gsutil cp gs://$_DATA_BUCKET/training-data/final_bundle.en.txt ./
 
         echo 'Download jsons'
-        gsutil cp gs://estremennu-test-bucket/jsons/metadata_en_ext.json ./
-        gsutil cp gs://estremennu-test-bucket/jsons/metadata_es_ext.json ./
-        gsutil cp gs://estremennu-test-bucket/jsons/metadata_ext_en.json ./
-        gsutil cp gs://estremennu-test-bucket/jsons/metadata_ext_es.json ./
+        gsutil cp gs://$_DATA_BUCKET/jsons/metadata_en_ext.json ./
+        gsutil cp gs://$_DATA_BUCKET/jsons/metadata_es_ext.json ./
+        gsutil cp gs://$_DATA_BUCKET/jsons/metadata_ext_en.json ./
+        gsutil cp gs://$_DATA_BUCKET/jsons/metadata_ext_es.json ./
 
-        gsutil cp gs://estremennu-test-bucket/jsons/data_index_skeleton.json ./
+        gsutil cp gs://$_DATA_BUCKET/jsons/data_index_skeleton.json ./
 
         echo 'Make test size zips'
         echo 'Create dummy files'
@@ -97,13 +97,13 @@ steps:
         zip -r "$argos_file" "$argos_folder"
 
         echo 'Push files into bucket'
-        gsutil cp data-oscec-en_ext.argosdata gs://estremennu-argos-packages/
-        gsutil cp data-oscec-es_ext.argosdata gs://estremennu-argos-packages/
-        gsutil cp data-oscec-ext_en.argosdata gs://estremennu-argos-packages/
-        gsutil cp data-oscec-ext_es.argosdata gs://estremennu-argos-packages/
+        gsutil cp data-oscec-en_ext.argosdata gs://$_PACKAGE_BUCKET/
+        gsutil cp data-oscec-es_ext.argosdata gs://$_PACKAGE_BUCKET/
+        gsutil cp data-oscec-ext_en.argosdata gs://$_PACKAGE_BUCKET/
+        gsutil cp data-oscec-ext_es.argosdata gs://$_PACKAGE_BUCKET/
         
         echo 'Upload data index'
-        gsutil cp data_index_skeleton.json gs://estremennu-argos-packages/
+        gsutil cp data_index_skeleton.json gs://$_PACKAGE_BUCKET/
 
         echo 'Make files public'
-        gsutil iam ch allUsers:objectViewer gs://estremennu-argos-packages/
+        gsutil iam ch allUsers:objectViewer gs://$_PACKAGE_BUCKET/
