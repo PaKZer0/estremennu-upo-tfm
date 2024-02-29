@@ -31,6 +31,8 @@ module "cbtriggers" {
   region = var.region
   zone = var.zone
   projectnum = var.projectnum
+  bucketid1 = var.bucketid1
+  bucketid2 = var.bucketid2
 }
 
 module "iam" {

@@ -10,6 +10,14 @@ variable "zone" {
   type = string
 }
 
+variable "bucketid1" {
+  type = string
+}
+
+variable "bucketid2" {
+  type = string
+}
+
 variable "connection_name" {
   default = "estremennu-connection"
 }

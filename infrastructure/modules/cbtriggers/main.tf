@@ -49,6 +49,10 @@ resource "google_cloudbuild_trigger" "clone-and-translate" {
   location = var.region
   description = "Gathers bilingual texts and translates them to english"
 
+  substitutions  = {
+    "_BUCKET_NAME" = var.bucketid1
+  }
+
   git_file_source {
     path       = "cloud_build/clone_repo/clone_repo.yaml"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
