@@ -72,6 +72,11 @@ resource "google_cloudbuild_trigger" "package-creator" {
   location = var.region
   description = "Gathers trilingual texts and packages them into argosdata packages"
 
+  substitutions  = {
+    "_DATA_BUCKET" = var.bucketid1
+    "_PACKAGE_BUCKET" = var.bucketid2
+  }
+
   git_file_source {
     path       = "cloud_build/bundle_packages/bundle_packages.yaml"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
