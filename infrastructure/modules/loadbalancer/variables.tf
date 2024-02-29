@@ -1,11 +1,11 @@
 variable "projectid" {
-  default = "canteaol-estremennu-tf"
+  type = string
 }
 
 variable "region" {
-  default = "europe-west1"
+  type = string
 }
 
 variable "cloud_run_service" {
-  default = "libre-translate"
+  type = string
 }

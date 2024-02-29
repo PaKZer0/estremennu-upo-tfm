@@ -1,23 +1,23 @@
 variable "projectid" {
-  default = "canteaol-estremennu-tf"
+  type = string
 }
 
 variable "projectnum" {
-  default = "530352023622"
+  type = string
 }
 
 variable "region" {
-  default = "europe-west1"
+  type = string
 }
 
 variable "zone" {
-  default = "europe-west1-b"
+  type = string
 }
 
 variable "cloud_run_service" {
-  default = "libre-translate"
+  type = string
 }
 
 variable "container_image" {
-  default = "us-docker.pkg.dev/cloudrun/container/hello"
+  type = string
 }

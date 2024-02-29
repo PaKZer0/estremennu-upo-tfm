@@ -1,5 +1,5 @@
 variable "projectid" {
-  default = "canteaol-estremennu-tf"
+  type = string
 }
 
 variable "region" {

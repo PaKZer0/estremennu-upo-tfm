@@ -1,13 +1,13 @@
 variable "projectid" {
-  default = "canteaol-estremennu-tf"
+  type = string
 }
 
 variable "region" {
-  default = "europe-west1"
+  type = string
 }
 
 variable "zone" {
-  default = "europe-west1-b"
+  type = string
 }
 
 variable "name" {

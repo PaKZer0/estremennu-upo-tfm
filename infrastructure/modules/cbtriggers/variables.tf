@@ -1,13 +1,13 @@
 variable "projectnum" {
-  default = "530352023622"
+  type = string
 }
 
 variable "region" {
-  default = "europe-west1"
+  type = string
 }
 
 variable "zone" {
-  default = "europe-west1-b"
+  type = string
 }
 
 variable "connection_name" {

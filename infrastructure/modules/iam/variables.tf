@@ -1,7 +1,7 @@
 variable "projectid" {
-  default = "canteaol-estremennu-tf"
+  type = string
 }
 
 variable "projectnum" {
-  default = "530352023622"
+  type = string
 }
