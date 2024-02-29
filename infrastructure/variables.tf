@@ -37,3 +37,8 @@ variable "bucketid2" {
   type = string
   default = "argos-packages-estremennu"
 }
+
+variable "artifact_repository_name" {
+  type = string
+  default = "argos-repository"
+}

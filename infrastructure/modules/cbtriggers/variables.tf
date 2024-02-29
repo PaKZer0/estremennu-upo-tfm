@@ -18,6 +18,10 @@ variable "bucketid2" {
   type = string
 }
 
+variable "artifact_repository_name" {
+  type = string
+}
+
 variable "connection_name" {
   default = "estremennu-connection"
 }
