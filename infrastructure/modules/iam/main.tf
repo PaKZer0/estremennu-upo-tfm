@@ -35,6 +35,15 @@ resource "google_project_iam_binding" "secret_accesor" {
   ]
 }
 
+resource "google_project_iam_binding" "sa_user" {
+  project = var.projectid
+  role    = "roles/iam.serviceAccountUser"
+
+  members = [
+    "serviceAccount:${var.projectnum}@cloudbuild.gserviceaccount.com",
+  ]
+}
+
 # Cloud Functions SA IAM roles
 resource "google_project_iam_binding" "big_query_editor" {
   project = var.projectid

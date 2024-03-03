@@ -11,4 +11,5 @@ gcloud services enable secretmanager.googleapis.com
 gcloud services enable run.googleapis.com
 gcloud services enable cloudresourcemanager.googleapis.com
 gcloud services enable cloudfunctions.googleapis.com
+gcloud services enable translate.googleapis.com
 echo 'Required apis enabled'

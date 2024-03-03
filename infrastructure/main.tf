@@ -1,6 +1,7 @@
 module "storage" {
   source = "./modules/storage"
   projectid = var.projectid
+  projectnum = var.projectnum
   region = var.region
   zone = var.zone
 }
