@@ -6,6 +6,8 @@ steps:
     args:
       - '-c'
       - |
+        sed -i "s/<PACKAGE_BUCKET>/${_PACKAGE_BUCKET}/g" index.json
+        cat index.json
         docker build -t europe-west1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REPOSITORY/libretranslate:latest .
     
   # Step 2: Push image to Artifact Registry

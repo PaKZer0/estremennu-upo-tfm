@@ -121,6 +121,7 @@ resource "google_cloudbuild_trigger" "deploy-libre-cloudrun" {
 
   substitutions  = {
     "_ARTIFACT_REPOSITORY" = var.artifact_repository_name
+    "_PACKAGE_BUCKET"      = var.bucketid2
   }
 
   git_file_source {

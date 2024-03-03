@@ -14,3 +14,12 @@ resource "google_storage_bucket" "bucket2" {
   force_destroy = true
   storage_class = "STANDARD"
 }
+
+resource "google_storage_bucket_iam_binding" "public_binding" {
+  bucket = var.bucketid2
+  role   = "roles/storage.objectViewer"
+  
+  members = [
+    "allUsers",
+  ]
+}
