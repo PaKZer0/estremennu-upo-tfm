@@ -23,3 +23,12 @@ resource "google_storage_bucket_iam_binding" "public_binding" {
     "allUsers",
   ]
 }
+
+resource "google_storage_bucket_iam_binding" "cloud_build_access" {
+  bucket = var.bucketid2
+  role   = "roles/storage.admin"
+  
+  members = [
+    "serviceAccount:${var.projectnum}@cloudbuild.gserviceaccount.com",
+  ]
+}
