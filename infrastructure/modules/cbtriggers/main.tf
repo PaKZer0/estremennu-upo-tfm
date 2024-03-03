@@ -56,12 +56,12 @@ resource "google_cloudbuild_trigger" "clone-and-translate" {
   git_file_source {
     path       = "cloud_build/clone_repo/clone_repo.yaml"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
-    revision   = "refs/heads/main"
+    revision   = "refs/heads/master"
     repo_type  = "GITHUB"
   }
 
   source_to_build {
-    ref        = "refs/heads/main"
+    ref        = "refs/heads/master"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
     repo_type  = "GITHUB"
   }
@@ -80,12 +80,12 @@ resource "google_cloudbuild_trigger" "package-creator" {
   git_file_source {
     path       = "cloud_build/bundle_packages/bundle_packages.yaml"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
-    revision   = "refs/heads/main"
+    revision   = "refs/heads/master"
     repo_type  = "GITHUB"
   }
 
   source_to_build {
-    ref        = "refs/heads/main"
+    ref        = "refs/heads/master"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
     repo_type  = "GITHUB"
   }
@@ -103,12 +103,12 @@ resource "google_cloudbuild_trigger" "build-trainer-image" {
   git_file_source {
     path       = "cloud_build/build_argostrain/build_image.yaml"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
-    revision   = "refs/heads/main"
+    revision   = "refs/heads/master"
     repo_type  = "GITHUB"
   }
 
   source_to_build {
-    ref        = "refs/heads/main"
+    ref        = "refs/heads/master"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
     repo_type  = "GITHUB"
   }
@@ -121,17 +121,18 @@ resource "google_cloudbuild_trigger" "deploy-libre-cloudrun" {
 
   substitutions  = {
     "_ARTIFACT_REPOSITORY" = var.artifact_repository_name
+    "_PACKAGE_BUCKET"      = var.bucketid2
   }
 
   git_file_source {
     path       = "cloud_build/deploy_libretranslate/deploy_libretranslate.yaml"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
-    revision   = "refs/heads/main"
+    revision   = "refs/heads/master"
     repo_type  = "GITHUB"
   }
 
   source_to_build {
-    ref        = "refs/heads/main"
+    ref        = "refs/heads/master"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
     repo_type  = "GITHUB"
   }
@@ -145,12 +146,12 @@ resource "google_cloudbuild_trigger" "deploy-fulfillment" {
   git_file_source {
     path       = "cloud_functions/fulfillment/cloudbuild.yaml"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
-    revision   = "refs/heads/main"
+    revision   = "refs/heads/master"
     repo_type  = "GITHUB"
   }
 
   source_to_build {
-    ref        = "refs/heads/main"
+    ref        = "refs/heads/master"
     repository = "${google_cloudbuildv2_connection.my-connection.id}/repositories/${var.repo_name}"
     repo_type  = "GITHUB"
   }
